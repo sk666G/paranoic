@@ -17,11 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public final class ZioClient implements ModInitializer, ClientModInitializer {
-   public static final String MOD_ID = "zio";
-   public static final String NAME = "Zio";
-   public static final String PROJECT_URL = "https://github.com/Cypphi/open-zio";
+   public static final String MOD_ID = "paranoic";
+   public static final String NAME = "Paranoic";
+   public static final String PROJECT_URL = "https://github.com/sk666G/paranoic";
    public static final String VERSION = FabricLoader.getInstance().getModContainer(MOD_ID)
-      .orElseThrow(() -> new IllegalStateException("Zio mod metadata is missing"))
+      .orElseThrow(() -> new IllegalStateException("Paranoic mod metadata is missing"))
       .getMetadata().getVersion().getFriendlyString();
    public static final String USER_AGENT = NAME + "/" + VERSION;
    public static final Logger LOGGER = LoggerFactory.getLogger(NAME);

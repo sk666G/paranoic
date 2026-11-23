@@ -33,12 +33,12 @@ public final class HelpCommand extends Command {
    @Override
    public void exec(LiteralArgumentBuilder root) {
 
-      File clientDirectory = new File("zio");
+      File clientDirectory = new File("paranoic");
       if (!clientDirectory.exists()) {
          TaskScheduler scheduler = ClientContext.taskScheduler;
          Runnable welcomeAction = () -> {
 
-               MutableComponent message = Component.literal("Welcome to Zio!");
+               MutableComponent message = Component.literal("Welcome to Paranoic!");
 
                MessageSignature welcomeSignature = ChatUtils.createSignature(-1001);
                ChatUtils.printChat(message, welcomeSignature);

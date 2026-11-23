@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "id": "zio",
+  "id": "paranoic",
   "version": "${version}",
-  "name": "Zio",
-  "authors": ["Cypphi"],
+  "name": "Paranoic",
+  "authors": ["sk666G", "Cypphi"],
   "contact": {
-    "discord": "https://discord.com/invite/W2cEqSf8eK"
+    "sources": "https://github.com/sk666G/paranoic"
   },
-  "icon": "assets/zio/textures/zio.png",
-  "description": "Zio: readable Java reconstruction of the captured Minecraft client; full original equivalence remains unproven.",
+  "icon": "assets/paranoic/textures/icon.png",
+  "description": "Paranoic is a Fabric client for Minecraft 1.21.11, based on the Open Zio codebase.",
   "environment": "client",
   "accessWidener": "zio.accesswidener",
   "entrypoints": {

@@ -111,7 +111,7 @@ public final class ClientInitializer {
       ClientContext.swingManager = new SwingInteractionManager();
       Locale.setDefault(Category.FORMAT, Locale.US);
       this.managersInitialized = true;
-      ZioClient.LOGGER.info("Zio main initialization completed.");
+      ZioClient.LOGGER.info("Paranoic main initialization completed.");
    }
 
    public void initializeClient() {
@@ -130,19 +130,19 @@ public final class ClientInitializer {
       CustomItemRegistries.initialize();
       configuration.load();
       this.clientInitialized = true;
-      ZioClient.LOGGER.info("Zio client initialization completed.");
+      ZioClient.LOGGER.info("Paranoic client initialization completed.");
    }
 
    private static void requireEnvironment() {
       FabricLoader fabric = FabricLoader.getInstance();
       if (fabric.getEnvironmentType() != EnvType.CLIENT || Runtime.version().feature() < 21) {
-         throw new IllegalStateException("Zio requires the Fabric client environment and Java 21 or newer.");
+         throw new IllegalStateException("Paranoic requires the Fabric client environment and Java 21 or newer.");
       }
       String minecraft = fabric.getModContainer("minecraft")
          .orElseThrow(() -> new IllegalStateException("Minecraft mod container is missing."))
          .getMetadata().getVersion().getFriendlyString();
       if (!"1.21.11".equals(minecraft)) {
-         throw new IllegalStateException("Zio requires Minecraft 1.21.11; found " + minecraft);
+         throw new IllegalStateException("Paranoic requires Minecraft 1.21.11; found " + minecraft);
       }
    }
 }

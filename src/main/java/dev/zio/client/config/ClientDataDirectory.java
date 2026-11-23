@@ -25,8 +25,14 @@ public final class ClientDataDirectory {
     private ClientDataDirectory() {
     }
 
-    public static Path migrateLegacy(Path destination) {
-        Path legacy = destination.resolveSibling("mio-fabric");
+    public static Path migrateLegacy(Path destination, Path... legacyDirectories) {
+        Path legacy = null;
+        for (Path candidate : legacyDirectories) {
+            if (Files.exists(candidate, LinkOption.NOFOLLOW_LINKS)) {
+                legacy = candidate;
+                break;
+            }
+        }
         Path staging = null;
         try {
             if (Files.exists(destination, LinkOption.NOFOLLOW_LINKS)) {
@@ -35,7 +41,7 @@ public final class ClientDataDirectory {
                 }
                 return destination;
             }
-            if (!Files.exists(legacy, LinkOption.NOFOLLOW_LINKS)) {
+            if (legacy == null) {
                 return destination;
             }
             if (!Files.isDirectory(legacy)) {

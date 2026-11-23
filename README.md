@@ -1,39 +1,35 @@
-# Open Zio
+# Paranoic
 
-An optimized recreation of Mio 2.4.4 for Minecraft 1.21.11.
-![zio](https://raw.githubusercontent.com/minecraftlover74/open-zio/refs/heads/main/zio.png)
+Paranoic is a Fabric client for Minecraft 1.21.11, built from the Open Zio codebase. It keeps the source project's broad module set and adds a distinct client identity, a clean build artifact, and data migration from existing Zio and Mio Fabric profiles.
 
-[![YOUTUBE](https://img.youtube.com/vi/2k92c_UstgY/0.jpg)](https://www.youtube.com/watch?v=2k92c_UstgY)
+## Features
 
-# Discord
-Never miss our projects again: https://discord.com/invite/W2cEqSf8eK
+- Combat, movement, player, render, HUD, world, and utility modules
+- Click GUI, commands, keybinds, module profiles, friends, enemies, macros, and chat filters
+- Optional Baritone, ViaFabricPlus, Xaero's Minimap, Sodium, Lithium, ImmediatelyFast, and Entity Culling integrations
+- Bundled sounds, shaders, fonts, and resource overrides
 
-# Issues & Contributing
+Optional integrations are not required to launch the client. Their features remain unavailable when the corresponding mod is absent.
 
-- If you find issues I'm happy to fix them.
-- I will not accept new feature requests or pull requests adding new features.
-- Pull requests with patches / fixes are welcome
+## Requirements
 
-# Showcase
+- Minecraft 1.21.11
+- Fabric Loader 0.19.5 or newer and Fabric API
+- Java 21 to run the client
+- JDK 25 to run the Gradle build; Gradle compiles the mod with the Java 21 toolchain
 
-- https://youtu.be/2k92c_UstgY
+## Build
 
-# Download
-
-[Latest successful build of Open Zio](https://git.spectrum.best/SpectrumDevs/open-zio/-/jobs/artifacts/main/raw/dist/zio.jar?job=build-client) for Minecraft 1.21.11.
-
-# Building
-
-Run Gradle with JDK 25 and have JDK 21 installed for the client toolchain.
-
-```
+```sh
 ./gradlew build
 ```
 
-or for Windows:
+The remapped client jar is written to `build/libs/`. To launch the development client, run `./gradlew runClient`.
 
-```
-.\gradlew build
-```
+## Install
 
-The built JAR is in `build/libs/`.
+Copy the remapped `paranoic-*.jar` into the Fabric instance's `mods` directory alongside Fabric API. The first launch creates a `paranoic` data directory. If a `paranoic` directory is not already present, existing `zio` data is copied forward; older `mio-fabric` data is also supported.
+
+## Source lineage
+
+Paranoic is based on [Open Zio](https://github.com/minecraftlover74/open-zio), an optimized Java recreation of Mio 2.4.4. The inherited code retains its original notices and attribution. Paranoic is not affiliated with or endorsed by Mio.

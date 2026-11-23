@@ -80,10 +80,16 @@ public final class LegacyBranding {
                     settings.addProperty("Sequential", sequential.getAsBoolean() ? "Strict" : "None");
                 }
             }
-            case "Watermark" -> replaceDefault(settings, "Text", "Mio", ZioClient.NAME);
-            case "Welcomer" -> replaceDefault(settings, "Text", "Welcome to Mio.", "Welcome to Zio.");
+            case "Watermark" -> {
+                replaceDefault(settings, "Text", "Mio", ZioClient.NAME);
+                replaceDefault(settings, "Text", "Zio", ZioClient.NAME);
+            }
+            case "Welcomer" -> {
+                replaceDefault(settings, "Text", "Welcome to Mio.", "Welcome to Paranoic.");
+                replaceDefault(settings, "Text", "Welcome to Zio.", "Welcome to Paranoic.");
+            }
             case "AutoSign" -> {
-                replaceDefault(settings, "Line1", "get mioclient", "get Zio");
+                replaceDefault(settings, "Line1", "get mioclient", "get Paranoic");
                 if (equalsString(settings.get("Line3"), "www.mioclient.me")) {
                     if (equalsString(settings.get("Line4"), ":p")) {
                         settings.addProperty("Line3", "github.com/");

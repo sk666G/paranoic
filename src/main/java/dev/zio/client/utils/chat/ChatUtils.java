@@ -62,7 +62,7 @@ public final class ChatUtils implements ClientAccess {
    public static Component createPrefix() {
       return Component.empty()
          .append(Component.literal("[").withStyle((UnaryOperator<Style>)style -> withDynamicColor(style, NOTIFICATIONS::getBracketColor)))
-         .append(Component.literal("Zio").withStyle((UnaryOperator<Style>)style -> withDynamicColor(style, NOTIFICATIONS::getWatermarkColor)))
+         .append(Component.literal(dev.zio.client.ZioClient.NAME).withStyle((UnaryOperator<Style>)style -> withDynamicColor(style, NOTIFICATIONS::getWatermarkColor)))
          .append(Component.literal("]").withStyle((UnaryOperator<Style>)style -> withDynamicColor(style, NOTIFICATIONS::getBracketColor)));
    }
 
@@ -81,7 +81,7 @@ public final class ChatUtils implements ClientAccess {
    static {
       DEFAULT_SIGNATURE = createSignature(-1);
       NOTIFICATIONS = ClientContext.getModule(NotificationsModule.class);
-      MESSAGE_TAG = new GuiMessageTag(-1, null, Component.empty(), "Zio");
+      MESSAGE_TAG = new GuiMessageTag(-1, null, Component.empty(), dev.zio.client.ZioClient.NAME);
       ARROW_WHISPER_PATTERN = Pattern.compile("^(\\w{3,16}) -> (\\w{3,16}): (.*)");
       INCOMING_WHISPER_PATTERNS = List.of(
          Pattern.compile("^From (\\w{3,16}): (.*)"),

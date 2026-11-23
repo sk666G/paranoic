@@ -149,7 +149,7 @@ public class DisconnectedScreenMixin extends Screen {
    @Override
    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
       String reasonText = this.details.reason().getString();
-      if (reasonText.contains("Zio") && reasonText.contains("[AutoLog]")) {
+      if (reasonText.contains("Paranoic") && reasonText.contains("[AutoLog]")) {
          this.autoReconnectButton
             .setX(-1000);
          this.autoReconnectButton
@@ -181,7 +181,7 @@ public class DisconnectedScreenMixin extends Screen {
       MutableComponent message = Component.literal("AutoReconnect ");
       String reasonText = this.details.reason().getString();
       boolean showCountdown = autoReconnectModule.isToggled()
-         && (!reasonText.contains("Zio") || !reasonText.contains("[AutoLog]"));
+         && (!reasonText.contains("Paranoic") || !reasonText.contains("[AutoLog]"));
       float remainingSeconds = this.getReconnectSecondsRemaining(
          autoReconnectModule
       );

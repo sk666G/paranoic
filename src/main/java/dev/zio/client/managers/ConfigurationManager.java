@@ -126,7 +126,9 @@ public final class ConfigurationManager implements ClientAccess {
 
       Path parentDirectory = FabricLoader.getInstance().getGameDir();
 
-      ROOT_DIRECTORY = dev.zio.client.config.ClientDataDirectory.migrateLegacy(parentDirectory.resolve("zio"));
+      ROOT_DIRECTORY = dev.zio.client.config.ClientDataDirectory.migrateLegacy(
+         parentDirectory.resolve("paranoic"), parentDirectory.resolve("zio"), parentDirectory.resolve("mio-fabric")
+      );
       parentDirectory = ROOT_DIRECTORY;
 
       PRESETS_DIRECTORY = parentDirectory.resolve("presets");

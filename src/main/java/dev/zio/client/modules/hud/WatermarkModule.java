@@ -67,7 +67,7 @@ public class WatermarkModule extends HudWidgetModule {
    public WatermarkModule() {
       super("Watermark", new String[0]);
       this.versionColorSetting = this.add(new BooleanSetting("VersionColor", true));
-      this.textSetting = this.add(new StringSetting("Text", "Zio"));
+      this.textSetting = this.add(new StringSetting("Text", dev.zio.client.ZioClient.NAME));
       HudTextRow textRow = new HudTextRow(this::buildWatermarkText, () -> true);
       this.setRenderer(new HudTextListRenderer(this, textRow));
       this.getRenderer().setAnchor(HudAnchor.TOP_LEFT);
