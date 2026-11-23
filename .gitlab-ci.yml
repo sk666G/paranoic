@@ -1,0 +1,80 @@
+workflow:
+  auto_cancel:
+    on_new_commit: none
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+
+build-client:
+  stage: build
+  image: gradle:9.7.0-jdk25
+  tags:
+    - spectrum
+  before_script:
+    - curl --fail --silent --show-error --location --retry 2 --output /tmp/zio-jdk21.tar.gz https://mirror.metanet.ch/gentoo/distfiles/66/OpenJDK21U-jdk_x64_linux_hotspot_21.0.13_9.tar.gz
+    - echo 'd7f5d5cf865a2902b70ff549b97586a7d3f234e016f041ab447ea740c7d66d1c  /tmp/zio-jdk21.tar.gz' | sha256sum -c
+    - mkdir -p /tmp/zio-jdk21
+    - tar --extract --gzip --no-same-owner --strip-components=1 --file=/tmp/zio-jdk21.tar.gz --directory=/tmp/zio-jdk21
+  script:
+    - gradle --gradle-user-home "$CI_PROJECT_DIR/.gradle-user-home" build --stacktrace --no-daemon --max-workers=1 -Dorg.gradle.jvmargs="-Xmx2304m" -Porg.gradle.java.installations.paths=/tmp/zio-jdk21
+    - mkdir -p dist
+    - cp "build/libs/zio-$(sed -n 's/^version=//p' gradle.properties).jar" dist/zio.jar
+  artifacts:
+    access: all
+    expire_in: 7 days
+    paths:
+      - dist/zio.jar
+
+notify-discord:
+  stage: .post
+  image: gradle:9.7.0-jdk25
+  variables:
+    GIT_DEPTH: '0'
+  tags:
+    - spectrum
+  needs:
+    - job: build-client
+      artifacts: true
+  environment:
+    name: discord-builds
+    action: prepare
+  allow_failure: true
+  script:
+    - |
+      if [ -z "${DISCORD_BUILD_WEBHOOK_URL:-}" ]; then
+        echo "Discord build webhook is missing or overridden with an empty value." >&2
+        exit 1
+      fi
+      if ! printf '%s\n' "$DISCORD_BUILD_WEBHOOK_URL" | grep -Eq '^https://discord\.com/api/webhooks/[0-9]+/[A-Za-z0-9_-]+$'; then
+        echo "DISCORD_BUILD_WEBHOOK_URL must be a standard Discord webhook URL." >&2
+        exit 1
+      fi
+
+      test -s dist/zio.jar
+      zio_version=$(sed -n 's/^version=//p' gradle.properties)
+      mc_version=$(sed -n 's/^minecraft_version=//p' gradle.properties)
+      for version in "$zio_version" "$mc_version"; do
+        case "$version" in
+          ''|*[!A-Za-z0-9._+-]*)
+            echo "Invalid Open Zio or Minecraft version in gradle.properties." >&2
+            exit 1 ;;
+        esac
+      done
+      set --
+      download_url=''
+      if [ "$(wc -c < dist/zio.jar)" -le 20971520 ]; then
+        filename="zio-$zio_version-$mc_version-$CI_COMMIT_SHORT_SHA.jar"
+        set -- --form "files[0]=@dist/zio.jar;type=application/java-archive;filename=$filename"
+      else
+        download_url="$CI_PIPELINE_URL"
+      fi
+      payload=$(python3 .gitlab/discord-build-message.py "$zio_version" "$mc_version" "$download_url")
+
+      status=$(curl --silent --max-time 60 --output /dev/null --write-out '%{http_code}' \
+        --form-string "payload_json=$payload" "$@" "${DISCORD_BUILD_WEBHOOK_URL}?wait=true") || {
+        echo "Discord webhook request failed." >&2
+        exit 1
+      }
+      case "$status" in
+        2??) echo "Posted the Open Zio build to Discord." ;;
+        *) echo "Discord rejected the build notification (HTTP $status)." >&2; exit 1 ;;
+      esac
